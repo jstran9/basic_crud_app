@@ -14,15 +14,6 @@
   <!-- I will leave this unchanged for now as I will not deploy this to Heroku, Beanstalk, etc. -->
   <url>http://www.example.com</url>
 
-  <!--
-  <distributionManagement>
-      <repository>
-        <id>io.spring.repo.maven.release</id>
-        <url>http://repo.spring.io/release/</url>
-      </repository>
-  </distributionManagement>
-  -->
-
   <dependencyManagement>
     <dependencies>
       <!-- https://mvnrepository.com/artifact/org.springframework/spring-framework-bom -->
