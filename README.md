@@ -18,3 +18,15 @@
         - To mark as a test directory I marked my java directory I opened File ---> Project Settings ---> Modules tab ---> 
         I selected the src/test/java directory and right clicked it then selected "Tests."
         
+3. Notes for video #3.
+    - This is the [GitHub page](https://github.com/FasterXML/jackson) discussing the necessary modules.
+    - Since we have the HTTPJacksonMessageConverter then the standaloneSetup creates a series of message converters it
+    does not use the configuration we have defined inside of our mvc-dispatcher-servlet.xml file.  
+    - For the BlogEntryController and BlogEntryControllerTest I am using a lot of near identical methods just so I can have
+    these as reference.
+    - In the video for the 400 error it was shown that we must properly remember to format the JSON under the "content"
+    when building the mock POST request.
+    - JsonPath can check various parts of the object being passed in is correct.
+        - JsonPath grabs elements out of a JSON object.
+    - While following the video tutorial I forgot to use the "@RequestBody" annotation in the testPostBlogEntry method
+    which led to getting a null value using the jsonPath operator to grab the value.
