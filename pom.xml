@@ -38,6 +38,12 @@
       <artifactId>tomcat-embed-core</artifactId>
       <version>9.0.19</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.hateoas/spring-hateoas -->
+    <dependency>
+      <groupId>org.springframework.hateoas</groupId>
+      <artifactId>spring-hateoas</artifactId>
+      <version>0.25.1.RELEASE</version>
+    </dependency>
     <!-- JSON Processing -->
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
     <dependency>

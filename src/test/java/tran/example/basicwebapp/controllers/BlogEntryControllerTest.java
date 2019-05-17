@@ -3,17 +3,26 @@ package tran.example.basicwebapp.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tran.example.basicwebapp.controller.v1.BlogEntryController;
+import tran.example.basicwebapp.domain.BlogEntry;
+import tran.example.basicwebapp.service.BlogEntryService;
+
+import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.hamcrest.Matchers.is;
 
 public class BlogEntryControllerTest {
+
+    // mockito should inject this blogEntryService into our blogEntryController during testing.
+    @Mock
+    private BlogEntryService blogEntryService;
 
     @InjectMocks // used to inject a concrete implementation into the field.
     private BlogEntryController blogEntryController;
@@ -62,5 +71,22 @@ public class BlogEntryControllerTest {
                         .andExpect(jsonPath("$.title", is("Test Blog Title")))
 //                        .andExpect(jsonPath("$.title").doesNotExist())
                         .andDo(print());
+    }
+
+    @Test
+    public void getExistingBlogEntry() throws Exception {
+        /**
+         * tests for what happens when we get a BlogEntry that the BlogEntryService can find.
+         */
+        BlogEntry blogEntry = new BlogEntry();
+        blogEntry.setTitle("test title");
+        blogEntry.setId(1L);
+
+        when(blogEntryService.find(1L)).thenReturn(blogEntry);
+
+        mockMvc.perform(get("/api/v1/blog-entries/1"))
+                .andExpect(jsonPath("$.title", is(blogEntry.getTitle())))
+                .andExpect(jsonPath(".links[*].href", hasItem(endsWith("/blog-entries/1"))))
+                .andExpect(status().isOk());
     }
 }
