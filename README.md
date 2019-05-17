@@ -30,3 +30,9 @@
         - JsonPath grabs elements out of a JSON object.
     - While following the video tutorial I forgot to use the "@RequestBody" annotation in the testPostBlogEntry method
     which led to getting a null value using the jsonPath operator to grab the value.
+
+4. Notes for video #4.
+    - HateOAS summary: The client should be able to interact with the REST endpoints completely through Hypermedia which
+    allows the client and server to grow/be updated independently.
+    - Note: I slightly differ from the naming convention presented in this video.
+    - Another difference was that I decided to just create repositories and services without any implementations.
