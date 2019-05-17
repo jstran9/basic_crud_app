@@ -83,7 +83,7 @@ public class BlogEntryControllerTest {
         blogEntry.setTitle("test title");
         blogEntry.setId(1L);
 
-        when(blogEntryService.find(1L)).thenReturn(blogEntry);
+        when(blogEntryService.findBlogEntry(1L)).thenReturn(blogEntry);
 
         mockMvc.perform(get("/api/v1/blog-entries/1"))
                 .andDo(print())
@@ -97,7 +97,7 @@ public class BlogEntryControllerTest {
         /**
          * tests for what happens when we get a BlogEntry that the BlogEntryService cannot find.
          */
-        when(blogEntryService.find(1L)).thenReturn(null);
+        when(blogEntryService.findBlogEntry(1L)).thenReturn(null);
 
         mockMvc.perform(get("/api/v1/blog-entries/1"))
                 .andExpect(status().isNotFound());
@@ -109,9 +109,9 @@ public class BlogEntryControllerTest {
         deletedBlogEntry.setId(1L);
         deletedBlogEntry.setTitle("Test Title");
 
-        when(blogEntryService.delete(1L)).thenReturn(deletedBlogEntry);
+        when(blogEntryService.deleteBlogEntry(1L)).thenReturn(deletedBlogEntry);
 
-        mockMvc.perform(delete("/rest/blog-entries/1"))
+        mockMvc.perform(delete("/api/v1/blog-entries/1"))
                 .andExpect(jsonPath("$.title", is(deletedBlogEntry.getTitle())))
                 .andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/blog-entries/1"))))
                 .andExpect(status().isOk());
@@ -119,7 +119,7 @@ public class BlogEntryControllerTest {
 
     @Test
     public void deleteNonExistingBlogEntry() throws Exception {
-        when(blogEntryService.delete(1L)).thenReturn(null);
+        when(blogEntryService.deleteBlogEntry(1L)).thenReturn(null);
 
         mockMvc.perform(delete("/rest/blog-entries/1"))
                 .andExpect(status().isNotFound());
@@ -131,10 +131,10 @@ public class BlogEntryControllerTest {
         updatedEntry.setId(1L);
         updatedEntry.setTitle("Test Title");
 
-        when(blogEntryService.update(eq(1L), any(BlogEntry.class)))
+        when(blogEntryService.updateBlogEntry(eq(1L), any(BlogEntry.class)))
                 .thenReturn(updatedEntry);
 
-        mockMvc.perform(put("/rest/blog-entries/1")
+        mockMvc.perform(put("/api/v1/blog-entries/1")
                 .content("{\"title\":\"Test Title\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title", is(updatedEntry.getTitle())))
@@ -144,10 +144,10 @@ public class BlogEntryControllerTest {
 
     @Test
     public void updateNonExistingBlogEntry() throws Exception {
-        when(blogEntryService.update(eq(1L), any(BlogEntry.class)))
+        when(blogEntryService.updateBlogEntry(eq(1L), any(BlogEntry.class)))
                 .thenReturn(null);
 
-        mockMvc.perform(put("/rest/blog-entries/1")
+        mockMvc.perform(put("/api/v1/blog-entries/1")
                 .content("{\"title\":\"Test Title\"}")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
