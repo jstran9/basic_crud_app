@@ -36,3 +36,9 @@
     allows the client and server to grow/be updated independently.
     - Note: I slightly differ from the naming convention presented in this video.
     - Another difference was that I decided to just create repositories and services without any implementations.
+
+5. Notes for video #5.
+    - The two classes in services.util are used by the "Asm" classes to assemble lists.
+        - These two classes wrap our entities and wrap data (such as support for pagination).
+    - For the failing test of createBlogExistingBlogName we are expecting a status of isConflict() so when we threw the
+    ConflictException in the createBlog method of the AccountController we were able to fix this failing this.
