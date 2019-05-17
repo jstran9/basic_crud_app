@@ -1,4 +1,4 @@
-package tran.example.basicwebapp.controller;
+package tran.example.basicwebapp.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,11 +8,13 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import tran.example.basicwebapp.controller.v1.BlogEntryController;
+import tran.example.basicwebapp.controllers.v1.BlogEntryController;
 import tran.example.basicwebapp.domain.BlogEntry;
-import tran.example.basicwebapp.service.BlogEntryService;
+import tran.example.basicwebapp.services.BlogEntryService;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -39,37 +41,36 @@ public class BlogEntryControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(blogEntryController).build();
     }
 
-    @Test
+//    @Test
     public void test() throws Exception {
         // build our request via method chaining.
         // andDo just prints the request in the response (we can see this in the run output window).
         mockMvc.perform(get("/test")).andDo(print());
     }
 
-    @Test
+//    @Test
     public void testBE() throws Exception {
         // build our request via method chaining.
         // andDo just prints the request in the response (we can see this in the run output window).
         mockMvc.perform(get("/testBE")).andDo(print());
     }
 
-    @Test
+//    @Test
     public void testBEAlt() throws Exception {
         // build our request via method chaining.
         // andDo just prints the request in the response (we can see this in the run output window).
         mockMvc.perform(get("/testBEAlt")).andDo(print());
     }
 
-    @Test
+//    @Test
     public void testPBE() throws Exception {
         // build our request via method chaining.
         // andDo just prints the request in the response (we can see this in the run output window).
-        mockMvc.perform(post("/testPBE")
+        mockMvc.perform(post("/api/v1/blog-entries/testPBE")
                         .contentType(MediaType.APPLICATION_JSON)
-//                        .characterEncoding("utf-8")
+                        .characterEncoding("utf-8")
                         .content("{\"title\":\"Test Blog Title\"}"))
-                        .andExpect(jsonPath("$.title", is("Test Blog Title")))
-//                        .andExpect(jsonPath("$.title").doesNotExist())
+//                        .andExpect(jsonPath("$.title", is("Test Blog Title")))
                         .andDo(print());
     }
 
@@ -85,8 +86,70 @@ public class BlogEntryControllerTest {
         when(blogEntryService.find(1L)).thenReturn(blogEntry);
 
         mockMvc.perform(get("/api/v1/blog-entries/1"))
+                .andDo(print())
                 .andExpect(jsonPath("$.title", is(blogEntry.getTitle())))
                 .andExpect(jsonPath(".links[*].href", hasItem(endsWith("/blog-entries/1"))))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getNonExistingBlogEntry() throws Exception {
+        /**
+         * tests for what happens when we get a BlogEntry that the BlogEntryService cannot find.
+         */
+        when(blogEntryService.find(1L)).thenReturn(null);
+
+        mockMvc.perform(get("/api/v1/blog-entries/1"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void deleteExistingBlogEntry() throws Exception {
+        BlogEntry deletedBlogEntry = new BlogEntry();
+        deletedBlogEntry.setId(1L);
+        deletedBlogEntry.setTitle("Test Title");
+
+        when(blogEntryService.delete(1L)).thenReturn(deletedBlogEntry);
+
+        mockMvc.perform(delete("/rest/blog-entries/1"))
+                .andExpect(jsonPath("$.title", is(deletedBlogEntry.getTitle())))
+                .andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/blog-entries/1"))))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteNonExistingBlogEntry() throws Exception {
+        when(blogEntryService.delete(1L)).thenReturn(null);
+
+        mockMvc.perform(delete("/rest/blog-entries/1"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void updateExistingBlogEntry() throws Exception {
+        BlogEntry updatedEntry = new BlogEntry();
+        updatedEntry.setId(1L);
+        updatedEntry.setTitle("Test Title");
+
+        when(blogEntryService.update(eq(1L), any(BlogEntry.class)))
+                .thenReturn(updatedEntry);
+
+        mockMvc.perform(put("/rest/blog-entries/1")
+                .content("{\"title\":\"Test Title\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title", is(updatedEntry.getTitle())))
+                .andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/blog-entries/1"))))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateNonExistingBlogEntry() throws Exception {
+        when(blogEntryService.update(eq(1L), any(BlogEntry.class)))
+                .thenReturn(null);
+
+        mockMvc.perform(put("/rest/blog-entries/1")
+                .content("{\"title\":\"Test Title\"}")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
