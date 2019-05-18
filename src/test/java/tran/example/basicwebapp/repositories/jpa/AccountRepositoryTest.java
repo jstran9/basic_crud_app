@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import tran.example.basicwebapp.domain.Account;
 
 import org.springframework.transaction.annotation.Transactional;
+import tran.example.basicwebapp.repositories.AccountRepository;
 
 import static org.junit.Assert.assertNotNull;
 

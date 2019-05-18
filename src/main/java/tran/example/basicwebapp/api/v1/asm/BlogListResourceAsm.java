@@ -7,9 +7,6 @@ import tran.example.basicwebapp.services.util.BlogList;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
-/**
- * Created by Chris on 7/1/14.
- */
 public class BlogListResourceAsm extends ResourceAssemblerSupport<BlogList, BlogListResource> {
 
     public BlogListResourceAsm()

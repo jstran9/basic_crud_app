@@ -1,5 +1,6 @@
 package tran.example.basicwebapp.controllers.v1;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ public class BlogEntryController {
 
     private BlogEntryService blogEntryService;
 
+    @Autowired
     public BlogEntryController(BlogEntryService blogEntryService) {
         this.blogEntryService = blogEntryService;
     }
