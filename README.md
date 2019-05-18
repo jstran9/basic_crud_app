@@ -42,3 +42,13 @@
         - These two classes wrap our entities and wrap data (such as support for pagination).
     - For the failing test of createBlogExistingBlogName we are expecting a status of isConflict() so when we threw the
     ConflictException in the createBlog method of the AccountController we were able to fix this failing this.
+
+6. Notes for video #6.
+    - Below are some references to using the h2 database engine.
+        - A link to the h2 database engine website is [here](https://www.h2database.com/html/cheatSheet.html).
+        - The cheat sheet is [here](https://www.h2database.com/html/cheatSheet.html).
+        - At about 20:39 there is a discussion about "transaction demarcation"
+            - Entities attached during the transaction get detached after the transaction.
+        - The documentation with the "tx" namespace is [here](https://docs.spring.io/spring/docs/4.0.6.RELEASE/spring-framework-reference/htmlsingle/)
+        - It is important to note that we do not want to set the id for the Account object because it will be automatically
+        be created for us when the Account object is created. 
