@@ -64,3 +64,33 @@
     transaction available for current thread" and the fix for this was that I had the improper component scan and I needed
     to scan the directory that all the controllers were inside of.
     - I had to remove the title field from the BlogEntryListResource class.
+
+8. Notes for video #8.
+    - Grunt file: a configuration of the Grunt build system and Bower.
+        - Grunt is a task manager and is comparable to Ant.
+        - Bower is a package manager that is comparable to Maven.
+            - Grunt and Bower are taken together in the ng-boilerplate project.
+    - We want to place the ng-boilerplate inside of the webapp directory and we can use a folder inside of webapp
+    to publish it as static resources and have our JavaScript files updated in real time.
+    - Inside of the Grunt.JS file we use a taskConfig JSONObject to set up different configurations for a variety of tasks.
+        - For "copy" we should note that each copy task has a number of subtasks and each subtask has different parameters
+        for specifying what to copy and where to copy it to. 
+        - Grunt runs a different number of tasks in order to compile as few .js files as possible (minify) and for example
+        if there are many views then Grunt will ideally output one file so only one file is needed to use multiple views.
+    - We will be running "npm install" inside of the web-inf/app directory in order to produce contents inside of node_module.
+    - Bower is used for client-side dependencies and front-end development.
+    - File ".bowerrc" configures properties.
+        - A directory to download Bower dependencies to
+        - A configuration file for Bower, "bower.json"
+        - The bower.json file is also read which contains a different number of client-side dependencies for the application.
+        - To install the dependencies inside of bower.json we use the command below.
+            - "bower install" (we run this command inside of the webapp/app directory)
+        - File, "build.config.js" we can see that there is "vendor_files" which includes a number of different dependencies
+        from the vendor folder.
+    - Inside of web/app/index.html, there is "compiled javascript" and this is where Grunt loops through a number of files
+    and for each file it prints out a JavaScript link to the file.
+    - As we add to the vendor_files, the corresponding JavaScript link (script tag) containing the vendor file will also be
+    added to our index.html file.
+    - We will be more modifying contents inside of webapp/app/src/app.
+    - To start the AngularJS application (currently ng boilerplate up to this point).
+    - "Grunt watch" looks for changes in our JavaScript files and rebuilds the application whenever there is a change.
