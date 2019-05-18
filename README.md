@@ -52,3 +52,15 @@
         - The documentation with the "tx" namespace is [here](https://docs.spring.io/spring/docs/4.0.6.RELEASE/spring-framework-reference/htmlsingle/)
         - It is important to note that we do not want to set the id for the Account object because it will be automatically
         be created for us when the Account object is created. 
+
+7. Notes for video #7.
+    - When updating an entity we must remember to attach the entity to the persistence context by calling the corresponding
+    find method of the entity we are updating.
+    - When having trouble with properly injecting the services I had to add in extra configuration into the web.xml file
+    using the <context-param/> and <listener/> tags.
+    - When having issue with the h2 jdbc driver not loading I just had to remove the <test> scope from the pom.xml file
+    for the h2 dependency.
+    - I had issues with this error, "javax.persistence.TransactionRequiredException: No EntityManager with actual 
+    transaction available for current thread" and the fix for this was that I had the improper component scan and I needed
+    to scan the directory that all the controllers were inside of.
+    - I had to remove the title field from the BlogEntryListResource class.
