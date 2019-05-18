@@ -12,6 +12,10 @@
 
     <context:component-scan base-package="tran.example.basicwebapp.controllers.v1"/>
 
+    <!-- specify a place to search for static resources. -->
+    <!-- build/ is where the JavaScript application is built by Grunt. -->
+    <mvc:resources mapping="/app/**" location="/app/build/"/>
+    
     <mvc:annotation-driven/>
 
     <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
