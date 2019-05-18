@@ -10,6 +10,15 @@
          version="3.0">
   <display-name>Archetype Created Web Application</display-name>
 
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/business-config.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
     <!-- create a servlet. -->
     <servlet>
         <servlet-name>mvc-dispatcher</servlet-name>
