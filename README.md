@@ -94,3 +94,23 @@
     - We will be more modifying contents inside of webapp/app/src/app.
     - To start the AngularJS application (currently ng boilerplate up to this point).
     - "Grunt watch" looks for changes in our JavaScript files and rebuilds the application whenever there is a change.
+
+8. Notes for video #9.
+    - ng-app: a directive that defines a root module to bootstrap the application.
+        - a module that "asks" other modules in the application to configure themselves so that they can be properly
+        initialized.   
+    - ui.router uses "states"
+        - states are a way to represent a part of a web page that can be navigated to. 
+    - ui-view: a directive that specifies a place in the file that you would like to replace with a custom generated view.
+        - ui-view="main" (from index.html) says that the <div> with the ui-view=main contains the main view.
+            - note: the states on the web page can say if they will replace the main view.
+    - $stateProvider: a service defined by ui.router that allows us to create different states.
+        - stateProvider.state: allows us to create a "state" (parts of a page that we can navigate to)      
+        - url key: if we go to the state then the address bar is changed to "/about" and if we go to the state then the
+        address bar is changed to "/about." 
+    - when we are doing "ng-model='account.name'" in the login.tpl.html we are creating an "account" object in the $scope
+    object.
+        - This allows us to get a user's name and password when we click on the submit button on the login page.
+    - The controller (inside of app.js) binds data to the pageTitle variable inside of the $scope object and then in index.html
+    using "ng-bind" we can specify a variable that was declared in the variable then we can specify in inside of our view
+    (in this case index.html).
