@@ -95,7 +95,7 @@
     - To start the AngularJS application (currently ng boilerplate up to this point).
     - "Grunt watch" looks for changes in our JavaScript files and rebuilds the application whenever there is a change.
 
-8. Notes for video #9.
+9. Notes for video #9.
     - ng-app: a directive that defines a root module to bootstrap the application.
         - a module that "asks" other modules in the application to configure themselves so that they can be properly
         initialized.   
