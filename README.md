@@ -124,3 +124,13 @@
     - for "ui-sref" directive:
         - each state has a unique name and we just specify the name.
             - for ui-sref="login" we would like to go to the login state when we click on the login button.     
+
+11. Notes from video #11.
+    - this tutorial focuses on allowing user to register/create new accounts and to login into these accounts.
+        - ng-resource is used to interact with the RESTful endpoints.
+    - to install angular resource, "bower install angular-resource"
+        - I had to remove "json": "bower.json" from the .bowerrc file in order to execute the command
+        and I ended up installing angular-resource-1.7.8 (in the video tutorial the version used is 1.2.22). 
+        - This is the stackoverflow thread [here](https://stackoverflow.com/questions/36679810/bower-install-display-prompt-input-message-debian).
+    - we added 'vendor/angular-resource/angular-resource.min.js' to the build.config.js file to include angular-resource
+    in the build system.         
