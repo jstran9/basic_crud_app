@@ -114,3 +114,13 @@
     - The controller (inside of app.js) binds data to the pageTitle variable inside of the $scope object and then in index.html
     using "ng-bind" we can specify a variable that was declared in the variable then we can specify in inside of our view
     (in this case index.html).
+
+10. Notes for video #10.
+    - ng-show, ng-hide, ng-click, ui-sref (changes state when user clicks a link), and service and local storage to store
+    information.
+    - factory method on account module.
+        - a service in AngularJS is similar to a Spring singleton bean.
+            - the service can be injected anywhere in the application and is a single instance.
+    - for "ui-sref" directive:
+        - each state has a unique name and we just specify the name.
+            - for ui-sref="login" we would like to go to the login state when we click on the login button.     
