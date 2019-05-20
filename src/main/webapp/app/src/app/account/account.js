@@ -35,16 +35,45 @@ angular.module('ngBoilerplate.account', ['ui.router'])
             data: { pageTitle : 'Registration'}
         });
     })
-    .controller('LoginCtrl', function($scope) {
+    .factory('sessionService', function () {
+        // first argument is the service name.
+        var session = {};
+        session.login =  function(data) {
+            alert('user logged in with credentials ' + data.name + " and " + data.password);
+            /*
+             * this function will manage if the user is logged in or not.
+             * this is not a secure function.
+             * localStorage allows us to persistent data on the browser.
+             */
+          localStorage.setItem("session", data); // persist data between page refreshes.
+        };
+        session.logout = function () {
+            // just remove the contents stored in the login function.
+            localStorage.removeItem("session");
+        };
+        session.isLoggedIn = function() {
+            // checks if the user is logged in.
+            return localStorage.getItem("session") !== null;
+        };
+        return session; // return the service.
+    })
+    .controller('LoginCtrl', function($scope, sessionService /* inject the sessionService (names must be the same) */,
+                                      $state /* inject the state service of ui.router */) {
         /*
          * this function is injectable so we inject the $scope service into it.
+         * sessionService because we would want to use the name accountService on the service interacting with the RESTful
+         * endpoint.
          */
         $scope.login = function() {
-          alert('user logged in with ' + $scope.account.name + " and " + $scope.account.password);
+            sessionService.login($scope.account);
+            $state.go("home");
+          // alert('user logged in with ' + $scope.account.name + " and " + $scope.account.password);
         };
     })
-    .controller("RegisterCtrl", function($scope) {
+    .controller("RegisterCtrl", function($scope, sessionService, $state) {
         $scope.register = function() {
-            alert('user registered with ' + $scope.account.name + " and " + $scope.account.password);
+            sessionService.login($scope.account);
+            $state.go("home");
+            // alert('user registered with ' + $scope.account.name + " and " + $scope.account.password);
         };
     });
