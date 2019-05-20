@@ -1,7 +1,7 @@
 /*
  * the definition for our account module.
  */
-angular.module('ngBoilerplate.account', ['ui.router'])
+angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now inject ngResource into this module. */])
     /*
      * the config function is called when the application is bootstrapped.
      * custom services can be injected into this function.
@@ -57,23 +57,64 @@ angular.module('ngBoilerplate.account', ['ui.router'])
         };
         return session; // return the service.
     })
+    .factory('accountService', function ($resource /* enables us to interface with the RESTful endpoint. */) {
+        var service = {};
+        service.register = function(account, success, failure) {
+            var Account = $resource("/basicwebapp_war_exploded/api/v1/accounts"); // class representing the endpoint.
+            /*
+             * param 1: the query param field(s).
+             * param 2: the data.
+             * param 3: the success callback.
+             * param 4: the failure callback.
+             */
+            Account.save({}, account, success, failure);
+
+        };
+        service.userExists = function(account, success, failure) {
+            var Account = $resource("/basicwebapp_war_exploded/api/v1/accounts"); // class representing the endpoint.
+            /* *
+             * when we call "GET" the data is returned from the function, so the body of the request
+             * is contained in the response and in the return value (in the success portion) of our response.
+             */
+            var data = Account.get({name: account.name}, function() {
+                var accounts = data.accounts;
+                if(accounts.length !== 0) {
+                    success(accounts[0]);
+                } else {
+                    failure();
+                }
+            },
+            failure);
+        };
+        return service;
+    })
     .controller('LoginCtrl', function($scope, sessionService /* inject the sessionService (names must be the same) */,
-                                      $state /* inject the state service of ui.router */) {
+                                      $state, /* inject the state service of ui.router */ accountService) {
         /*
          * this function is injectable so we inject the $scope service into it.
          * sessionService because we would want to use the name accountService on the service interacting with the RESTful
          * endpoint.
          */
         $scope.login = function() {
-            sessionService.login($scope.account);
-            $state.go("home");
+            accountService.userExists($scope.account, function(account) {
+                sessionService.login(account);
+                $state.go("home");
+            }, function () {
+                alert("Error loggin in user");
+            });
           // alert('user logged in with ' + $scope.account.name + " and " + $scope.account.password);
         };
     })
-    .controller("RegisterCtrl", function($scope, sessionService, $state) {
+    .controller("RegisterCtrl", function($scope, sessionService, $state, accountService) {
         $scope.register = function() {
-            sessionService.login($scope.account);
-            $state.go("home");
+            accountService.register($scope.account /* pass in data from our form. */,
+            function(returnedData) { // call a function to get the returned data from the server.
+                sessionService.login(returnedData) /* JSON object representing the logged in account. */;
+                $state.go("home");
+            },
+            function() { // failure function.
+                alert("Error registering user.");
+            });
             // alert('user registered with ' + $scope.account.name + " and " + $scope.account.password);
         };
     });
