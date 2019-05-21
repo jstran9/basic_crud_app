@@ -8,7 +8,17 @@ import tran.example.basicwebapp.domain.Blog;
  */
 public class BlogResource extends ResourceSupport {
 
+    private Long rid;
+
     private String title;
+
+    public Long getRid() {
+        return rid;
+    }
+
+    public void setRid(Long rid) {
+        this.rid = rid;
+    }
 
     public String getTitle() {
         return title;

@@ -9,9 +9,19 @@ import tran.example.basicwebapp.domain.Account;
  * Created by Chris on 6/28/14.
  */
 public class AccountResource extends ResourceSupport {
+    private Long rid;
+
     private String name;
 
     private String password;
+
+    public Long getRid() {
+        return rid;
+    }
+
+    public void setRid(Long rid) {
+        this.rid = rid;
+    }
 
     public String getName() {
         return name;

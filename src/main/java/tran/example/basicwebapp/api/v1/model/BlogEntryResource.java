@@ -7,9 +7,19 @@ import tran.example.basicwebapp.domain.BlogEntry;
  * I believe this provides the same functionality as what a DTO would do.
  */
 public class BlogEntryResource extends ResourceSupport {
+    private Long rid;
+
     private String title;
 
     private String content;
+
+    public Long getRid() {
+        return rid;
+    }
+
+    public void setRid(Long rid) {
+        this.rid = rid;
+    }
 
     public String getTitle() {
         return title;
