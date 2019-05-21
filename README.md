@@ -134,3 +134,6 @@
         - This is the stackoverflow thread [here](https://stackoverflow.com/questions/36679810/bower-install-display-prompt-input-message-debian).
     - we added 'vendor/angular-resource/angular-resource.min.js' to the build.config.js file to include angular-resource
     in the build system.         
+
+12. Notes from video #12.
+    - 

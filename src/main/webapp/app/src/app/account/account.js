@@ -2,11 +2,11 @@
  * the definition for our account module.
  */
 angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now inject ngResource into this module. */])
-    /*
-     * the config function is called when the application is bootstrapped.
-     * custom services can be injected into this function.
-     * $stateProvider is a service defined the ui.router module.
-     */
+/*
+ * the config function is called when the application is bootstrapped.
+ * custom services can be injected into this function.
+ * $stateProvider is a service defined the ui.router module.
+ */
     .config(function($stateProvider) {
         $stateProvider.state('login', {
             url: '/login', // url associated with the state.
@@ -24,16 +24,16 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
             },
             data: { pageTitle : 'Login'}
         })
-        .state('register', {
-            url: '/register', // url associated with the state.
-            views: {
-                'main': {
-                    templateUrl: 'account/register.tpl.html',
-                    controller: 'RegisterCtrl'
-                }
-            },
-            data: { pageTitle : 'Registration'}
-        });
+            .state('register', {
+                url: '/register', // url associated with the state.
+                views: {
+                    'main': {
+                        templateUrl: 'account/register.tpl.html',
+                        controller: 'RegisterCtrl'
+                    }
+                },
+                data: { pageTitle : 'Registration'}
+            });
     })
     .factory('sessionService', function () {
         // first argument is the service name.
@@ -45,7 +45,7 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
              * this is not a secure function.
              * localStorage allows us to persistent data on the browser.
              */
-          localStorage.setItem("session", data); // persist data between page refreshes.
+            localStorage.setItem("session", data); // persist data between page refreshes.
         };
         session.logout = function () {
             // just remove the contents stored in the login function.
@@ -77,14 +77,14 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
              * is contained in the response and in the return value (in the success portion) of our response.
              */
             var data = Account.get({name: account.name}, function() {
-                var accounts = data.accounts;
-                if(accounts.length !== 0) {
-                    success(accounts[0]);
-                } else {
-                    failure();
-                }
-            },
-            failure);
+                    var accounts = data.accounts;
+                    if(accounts.length !== 0) {
+                        success(accounts[0]);
+                    } else {
+                        failure();
+                    }
+                },
+                failure);
         };
         return service;
     })
@@ -102,19 +102,19 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
             }, function () {
                 alert("Error loggin in user");
             });
-          // alert('user logged in with ' + $scope.account.name + " and " + $scope.account.password);
+            // alert('user logged in with ' + $scope.account.name + " and " + $scope.account.password);
         };
     })
     .controller("RegisterCtrl", function($scope, sessionService, $state, accountService) {
         $scope.register = function() {
             accountService.register($scope.account /* pass in data from our form. */,
-            function(returnedData) { // call a function to get the returned data from the server.
-                sessionService.login(returnedData) /* JSON object representing the logged in account. */;
-                $state.go("home");
-            },
-            function() { // failure function.
-                alert("Error registering user.");
-            });
+                function(returnedData) { // call a function to get the returned data from the server.
+                    sessionService.login(returnedData) /* JSON object representing the logged in account. */;
+                    $state.go("home");
+                },
+                function() { // failure function.
+                    alert("Error registering user.");
+                });
             // alert('user registered with ' + $scope.account.name + " and " + $scope.account.password);
         };
     });
