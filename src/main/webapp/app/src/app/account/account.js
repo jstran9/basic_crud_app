@@ -1,7 +1,7 @@
 /*
  * the definition for our account module.
  */
-angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now inject ngResource into this module. */])
+angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now inject ngResource into this module. */, 'base64'])
 /*
  * the config function is called when the application is bootstrapped.
  * custom services can be injected into this function.
@@ -24,16 +24,31 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
             },
             data: { pageTitle : 'Login'}
         })
-            .state('register', {
-                url: '/register', // url associated with the state.
-                views: {
-                    'main': {
-                        templateUrl: 'account/register.tpl.html',
-                        controller: 'RegisterCtrl'
-                    }
-                },
-                data: { pageTitle : 'Registration'}
-            });
+        .state('register', {
+            url: '/register', // url associated with the state.
+            views: {
+                'main': {
+                    templateUrl: 'account/register.tpl.html',
+                    controller: 'RegisterCtrl'
+                }
+            },
+            data: { pageTitle : 'Registration'}
+        })
+        .state('accountSearch', {
+            url:'/accounts/search',
+            views: {
+                'main': {
+                    templateUrl:'account/search.tpl.html',
+                    controller: 'AccountSearchCtrl'
+                }
+            },
+            data : { pageTitle : "Search Accounts" },
+            resolve: {
+                accounts: function(accountService) {
+                    return accountService.getAllAccounts();
+                }
+            }
+        });
     })
     .factory('sessionService', function () {
         // first argument is the service name.
@@ -57,6 +72,10 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
         };
         return session; // return the service.
     })
+    .factory('blogService', function($resource) {
+        var service = {};
+        return service;
+    })
     .factory('accountService', function ($resource /* enables us to interface with the RESTful endpoint. */) {
         var service = {};
         service.register = function(account, success, failure) {
@@ -69,6 +88,10 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
              */
             Account.save({}, account, success, failure);
 
+        };
+        service.getAccountById = function(accountId) {
+            var Account = $resource("/basicwebapp_war_exploded/api/v1/accounts/:paramAccountId");
+            return Account.get({paramAccountId:accountId}).$promise;
         };
         service.userExists = function(account, success, failure) {
             var Account = $resource("/basicwebapp_war_exploded/api/v1/accounts"); // class representing the endpoint.
@@ -85,6 +108,12 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
                     }
                 },
                 failure);
+        };
+        service.getAllAccounts = function() {
+            var Account = $resource("/basicwebapp_war_exploded/api/v1/accounts");
+            return Account.get().$promise.then(function(data) {
+                return data.accounts;
+            });
         };
         return service;
     })
@@ -117,4 +146,7 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
                 });
             // alert('user registered with ' + $scope.account.name + " and " + $scope.account.password);
         };
+    })
+    .controller("AccountSearchCtrl", function($scope, accounts) {
+        $scope.accounts = accounts;
     });
