@@ -50,17 +50,26 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
             }
         });
     })
-    .factory('sessionService', function () {
+    .factory('sessionService', function ($http) {
         // first argument is the service name.
         var session = {};
         session.login =  function(data) {
-            alert('user logged in with credentials ' + data.name + " and " + data.password);
-            /*
-             * this function will manage if the user is logged in or not.
-             * this is not a secure function.
-             * localStorage allows us to persistent data on the browser.
-             */
-            localStorage.setItem("session", data); // persist data between page refreshes.
+            // this function will manage if the user is logged in or not.
+            return $http.post("/basicwebapp_war_exploded/login", "username=" + data.name + "&password=" + data.password,
+            {
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(function(data) {
+                alert("login successful");
+                /*
+                 * the tutorial points out that it may be possible to do this by using cookies or reading cookies
+                 * from AngularJS.
+                 * this is not an optimal solution.
+                 */
+                localStorage.setItem("session", {}); // persist data between page refreshes.
+            }, function(data) {
+                console.log(data);
+                alert("error logging in");
+            });
         };
         session.logout = function () {
             // just remove the contents stored in the login function.
@@ -117,8 +126,7 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
         };
         return service;
     })
-    .controller('LoginCtrl', function($scope, sessionService /* inject the sessionService (names must be the same) */,
-                                      $state, /* inject the state service of ui.router */ accountService) {
+    .controller('LoginCtrl', function($scope, sessionService, $state, accountService) {
         /*
          * this function is injectable so we inject the $scope service into it.
          * sessionService because we would want to use the name accountService on the service interacting with the RESTful
@@ -126,8 +134,10 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
          */
         $scope.login = function() {
             accountService.userExists($scope.account, function(account) {
-                sessionService.login(account);
-                $state.go("home");
+                sessionService.login($scope.account).then(function() {
+                    // on successful login redirect to home.
+                    $state.go("home");
+                });
             }, function () {
                 alert("Error loggin in user");
             });
@@ -138,8 +148,11 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource' /* can now in
         $scope.register = function() {
             accountService.register($scope.account /* pass in data from our form. */,
                 function(returnedData) { // call a function to get the returned data from the server.
-                    sessionService.login(returnedData) /* JSON object representing the logged in account. */;
-                    $state.go("home");
+                    sessionService.login($scope.account) /* JSON object representing the logged in account. */
+                        .then(function() {
+                            // on successful registration redirect to home.
+                            $state.go("home");
+                        });
                 },
                 function() { // failure function.
                     alert("Error registering user.");
