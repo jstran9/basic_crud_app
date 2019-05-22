@@ -136,4 +136,16 @@
     in the build system.         
 
 12. Notes from video #12.
-    - 
+    - <groupId> org.aspectJ </groupId>
+        - allows us to create an AOP point cut which will allow us to whitelist our RESTFUL endpoints. 
+    - in accounts.js
+        - for the way we had the session.login method...
+            - this was insecure due to the following below.
+                - if the local storage data is not cleared another user can read the contents.
+                - the local storage can also be read in a cross-site scripting (xss) attack.
+        - the solution proposed instead of local storage would be to store a temporary session cookie that temporarily
+        authenticates the user.  
+    - The video tutorial does not require the passwordEncoder bean, this is specific for Spring Security 5.
+        - This [post](https://www.mkyong.com/spring-boot/spring-security-there-is-no-passwordencoder-mapped-for-the-id-null/)
+        was also something I used to be able to identify the potential error. 
+        - This was the [stackoverflow post](https://stackoverflow.com/questions/49654143/spring-security-5-there-is-no-passwordencoder-mapped-for-the-id-null#) I got the answer from..
