@@ -45,4 +45,5 @@
     </bean>
 
     <context:component-scan base-package="tran.example.basicwebapp.services.impl"/>
+    <context:component-scan base-package="tran.example.basicwebapp.security"/> <!-- security scan -->
 </beans>
