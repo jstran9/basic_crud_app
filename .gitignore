@@ -24,3 +24,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+# build
+src/main/webapp/app/build
+src/main/webapp/app/vendor
